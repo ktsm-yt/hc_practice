@@ -1,0 +1,143 @@
+.container {
+  display: grid;
+  grid-template-columns: 960px;
+  grid-template-rows: 40px 600px auto auto 40px;
+  width: 960px;
+  padding: 0 4%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header {   
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  background-color: yellow;
+}
+
+.header p {
+  color: #FFF;
+  background-color: black;
+  width: 100px;
+  padding-top: 6px;
+  font-weight: bold;
+}
+
+.header ul {
+  display: flex;
+  list-style-type: none;
+  width: 210px;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+
+
+.main_visual {
+  grid-column: 1;
+  grid-row: 2;
+  background-color: blue;
+}
+
+.main_visual_img {
+  width: 100%;
+  height: 600px;
+}
+
+
+.profile {
+  grid-column: 1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: 10px 600px 10px 100px 10px;
+  grid-template-rows: 50px 20px 100px;
+  background-color: greenyellow;
+  justify-content: space-between;
+}
+
+.profile h1 {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: underline;
+  padding-top: 10px;
+}
+
+.profile .name {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.profile .main_text {
+  grid-column: 2;
+  grid-row: 3;
+  font-size: 15px;
+  text-align: left;
+}
+
+.myself  { 
+  grid-column: 4;
+  grid-row: 2 / 3;
+}
+
+.myself_img {
+  border-radius: 50%;
+  padding: 5px;
+  width: 100px;
+}
+
+.profile_img {
+  grid-column: 1;
+  grid-row: 4;
+  background-color: red;
+}
+
+.profile_img h1 {
+  text-decoration: underline;
+  font-size: 20px; 
+  font-weight: bold;
+  padding: 30px;
+}
+
+.profile_img .title {
+  padding: 5px;
+  font-weight: bold;
+}
+
+.profile_img .text {
+  padding: 5px;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card_images {
+  width:300px;
+}
+
+
+
+.footer {
+  grid-column: 1;
+  grid-row: 5;
+  background-color: blueviolet;
+}
+
+.footer p {
+  padding-top: 5px
+}
+
+
+/* スマホレイアウト
+ブレークポイントは600pxです。
+自己紹介、プロフィール画像ともに、レスポンシブ時はコンテンツを縦積みにします。
+ */
+
