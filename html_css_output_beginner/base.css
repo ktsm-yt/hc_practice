@@ -11,6 +11,10 @@ body {
   line-height: 1.5em;
 }
 
+header {
+  display: flex;
+}
+
 /* header */
 header .wrapper {
   display: flex;
