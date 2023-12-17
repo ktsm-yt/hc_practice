@@ -5,12 +5,12 @@ members = %w(A B C D E F)
 shuffled_members = members.shuffle
 
 #グループを3人と3人、または2人と4人にランダムに分ける。
-groups = [[3,3],[2,4]]
-group = groups.sample
-#ここまでで[3,3][2,4]のどちらかの配列になる。
+#2つのグループについて考えず、まず2人か3人のランダムグループを作る。
+group = [2,3].sample
+#非常にシンプル
 
 #sampleメソッドに引数を当てる。
-group1 = shuffled_members.sample(group[0])
+group1 = shuffled_members.sample(group)
 group2 = shuffled_members - group1 #4.7.4 配列の差集合
 
 #表示結果はアルファベット順
