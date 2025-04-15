@@ -22,6 +22,7 @@ opt.on('-m [MONTH]', Integer, '月を指定') do |m|
   # 月の範囲を指定
   if m < 1 || 12 < m
     puts "#{m} is neither a month number (1..12) nor a name"
+    exit # エラーが出たら止まるように
   else
     # key: month value: mとして格納
     options[:month] = m
@@ -51,16 +52,17 @@ def calendar(month,year)
   first_date = Date.new(year, month, 1)
   last_date= Date.new(year, month, -1)
 
-  # 最初の日の曜日を取得 日曜が0なので+1
-  week_day = first_date.wday + 1
-  print "  " * week_day
+  # これまでのwday+1は日曜=1,月曜=2,...,土曜=7となってしまう。
+  # 最初の日の曜日を取得 cwdayなら月曜スタート
+  week_day = first_date.cwday
+  print "   " * (week_day - 1 )
 
   # 月初から月末までの羅列
   (first_date..last_date).each do |date|
     # 日付を右詰めするため、文字列に変換してrjust
     print date.day.to_s.rjust(2," ") + " "
     # 7つ目(日曜)で区切り改行
-    puts if date.wday == 0  
+    puts if date.cwday == 7  
   end
 end
 
