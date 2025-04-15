@@ -15,27 +15,45 @@ require 'optparse'
 
 # ・オプション指定
 # -mでオプションを出す
+# 保存用の空のハッシュを作成
+options = {}
+opt = OptionParser.new
+opt.on('-m [MONTH]', Integer, '月を指定') do |m|
+  # 月の範囲を指定
+  if m < 1 || 12 < m
+    puts "#{m} is neither a month number (1..12) nor a name"
+  else
+    # key: month value: mとして格納
+    options[:month] = m
+  end
+end
 
+opt.parse!(ARGV)
 
+# コード実行前に引数を受け取っておきたい。渡したい。
+
+# 初期セットアップ
+today = Date.today
+year = today.year
+month = options[:month] || today.month
+# キーを受け取っていれば値を、なければ当月を
 
 # コード
-
-def calendar
+def calendar(month,year)
   # 当月・年の表示
-  today = Date.today
-  puts "      " + "#{today.month}月 #{today.year}"
+  puts "      " + "#{month}月 #{year}"
   #標準ライブラリには該当なし。一桁月の0表記を除くコードは煩雑
 
   # 月曜始まりで羅列
   puts "月 火 水 木 金 土 日"
 
   # 最初の日、最後の日を取得(date)
-  first_date = Date.new(today.year, today.month, 1)
-  last_date= Date.new(today.year, today.month, -1)
+  first_date = Date.new(year, month, 1)
+  last_date= Date.new(year, month, -1)
 
   # 最初の日の曜日を取得 日曜が0なので+1
   week_day = first_date.wday + 1
-  print " " * week_day
+  print "  " * week_day
 
   # 月初から月末までの羅列
   (first_date..last_date).each do |date|
@@ -46,7 +64,10 @@ def calendar
   end
 end
 
-calendar
+
+calendar(month,year)
+
+
 # 装飾(要件外)
 # 当日の文字色・背景を反転(応用))
 # print "\e[30today\e[0m"
