@@ -43,26 +43,40 @@ end
 
 #2:ジュース管理クラス(自販機)
 class VendingMachine
-  attr_reader
-  def initialize
+  attr_reader :stock 
+  attr_writer :name :price :stock
+
+  # インナークラス
+  class Juice
+    attr_reader :name :price :stock
+    
+    # 初期状態 でジュースを1種格納
+    # 名前,値段,在庫の情報
+    def initialize(name = 'ペプシ', price = 150, stock = 5)
+      @name = name
+      @price = price
+      @stock = stock
+    end
+    # ハッシュでキーバリュー管理したいけども
   end
+
+  #インナークラス生成メソッド
+  def create_juice
+    Juice.new
+  end
+
+  #在庫取得機能
+  def check_stock
+    @stock
+  end
+  
 end
 
-class Juice
-  attr_reader :name :price :stock
-  
-  # 名前,値段,在庫の情報
-  def initialize(name, price, stock)
-    @name = name
-    @price = price
-    @stock = stock
-  end
+juice = VendingMachine::Juice.new
+juice.name
 
-#ジュースを1種格納
-juice = [{name: 'ペプシ', price: 150, sock: 5}]
-#在庫取得機能
 
-Juice.new()
+
 #3:販売処理
   #自販機に販売できるか追加validation
   #Suica残高とジュース値段の条件検証 & 例外処理
@@ -76,6 +90,6 @@ Juice.new()
 # ジュース管理を3つに
   {name: 'モンスター', price: 230, stock: 5}
   {name: 'いろはす', price: 120, stock: 5}
-# 自販機クラスにリストを追加
+# 自販機クラスにリスト機能を追加
 # 在庫補充のメソッド [:stock]
 # モンスターといろはすの購入
