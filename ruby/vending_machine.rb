@@ -7,12 +7,39 @@
 
 #1:Suicaクラス
 class Suica
-#デポジット 500円
-#チャージ機能 100>=任意の金額 
-#100<ならエラー
+  attr_reader :charge
 
-#現在のチャージ残高を取得する機能
+  #デポジット(チャージと同様として処理) 500円
+  def initialize(initial_charge = 500)
+    @charge = initial_charge
+  end
+  
+  #チャージ機能
+  def add_charge(amount)
+    if amount < 100 #100<ならエラー
+      raise ArgumentError, '100円以上の金額を入金してください'
+      # エラーでいいの?ターミナルで止まっちゃう
+    end
+    @charge += amount
+    puts "#{amount}円チャージしました"
+    puts "チャージ残高#{@charge}円 "
+  end
 
+  #現在のチャージ残高を取得する機能
+  def check_charge
+    puts "チャージ残高は#{@charge}円です"
+  end
+end
+
+# 動作確認 
+# suica = Suica.new
+# suica.add_charge(500)
+# suica.add_charge(50)
+# suica.check_charge
+
+
+# puts 'チャージ金額を入力してください'
+# amount = gets.chomp.to_i
 
 #2:ジュース管理クラス(自販機)
 #ジュースを1種格納
