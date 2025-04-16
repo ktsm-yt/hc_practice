@@ -38,19 +38,31 @@ end
 # suica.add_charge(50)
 # suica.check_charge
 
-
 # puts 'チャージ金額を入力してください'
 # amount = gets.chomp.to_i
 
 #2:ジュース管理クラス(自販機)
+class VendingMachine
+  attr_reader
+  def initialize
+  end
+end
+
+class Juice
+  attr_reader :name :price :stock
+  
+  # 名前,値段,在庫の情報
+  def initialize(name, price, stock)
+    @name = name
+    @price = price
+    @stock = stock
+  end
+
 #ジュースを1種格納
-# 名前,値段,在庫の情報
-juice = [
-  {name: 'ペプシ', price: 150, sock: 5}
-]
+juice = [{name: 'ペプシ', price: 150, sock: 5}]
 #在庫取得機能
 
-
+Juice.new()
 #3:販売処理
   #自販機に販売できるか追加validation
   #Suica残高とジュース値段の条件検証 & 例外処理
