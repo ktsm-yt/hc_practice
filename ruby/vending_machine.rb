@@ -21,13 +21,14 @@ class Suica
       # エラーでいいの?ターミナルで止まっちゃう
     end
     @charge += amount
-    puts "#{amount}円チャージしました"
-    puts "チャージ残高#{@charge}円 "
+    # puts "#{amount}円チャージしました"
+    # puts "チャージ残高#{@charge}円 "
   end
 
   #現在のチャージ残高を取得する機能
   def check_charge
-    puts "チャージ残高は#{@charge}円です"
+    @charge
+    # puts "チャージ残高は#{@charge}円です"
   end
 end
 
