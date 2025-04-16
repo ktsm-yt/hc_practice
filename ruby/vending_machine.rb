@@ -43,37 +43,45 @@ end
 
 #2:ジュース管理クラス(自販機)
 class VendingMachine
-  attr_reader :stock 
-  attr_writer :name :price :stock
-
+  # acsessorはダメだけど他はいいのかな?
+  attr_reader :stock, :info, :juice
+  attr_writer :name, :price, :stock, :info, :juice
   # インナークラス
   class Juice
-    attr_reader :name :price :stock
-    
+    attr_reader :name, :price, :stock, :info
     # 初期状態 でジュースを1種格納
     # 名前,値段,在庫の情報
+    # ハッシュでキー・バリュー管理
     def initialize(name = 'ペプシ', price = 150, stock = 5)
-      @name = name
-      @price = price
-      @stock = stock
+      @info = {name: name, price: price, stock: stock}
     end
-    # ハッシュでキーバリュー管理したいけども
+    # 最終的には配列にしたい
+    # def info
+    #   @info
+    # end
   end
 
+  def initialize
+    @juice = Juice.new
+  end
   #インナークラス生成メソッド
-  def create_juice
-    Juice.new
-  end
-
-  #在庫取得機能
-  def check_stock
-    @stock
-  end
-  
+  #initializeに統合
+  # def juice
+  #   @juice
+  # end
+  #在庫取得機能 
+  def check_stock 
+    @juice.info[:stock]
+  end 
 end
 
-juice = VendingMachine::Juice.new
-juice.name
+# #動作確認
+# vm =VendingMachine.new
+
+# puts vm.juice.info[:name]
+# puts vm.juice.info[:price]
+# puts vm.juice.info[:stock]
+# puts vm.check_stock
 
 
 
