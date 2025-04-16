@@ -7,13 +7,14 @@
 
 #1:Suicaクラス
 class Suica
-  attr_reader :charge
-
   #デポジット(チャージと同様として処理) 500円
   def initialize(initial_charge = 500)
     @charge = initial_charge
   end
   
+  def charge
+    @charge
+  end
   #チャージ機能
   def add_charge(amount)
     if amount < 100 #100<ならエラー
@@ -21,44 +22,36 @@ class Suica
       # エラーでいいの?ターミナルで止まっちゃう
     end
     @charge += amount
-    # puts "#{amount}円チャージしました"
-    # puts "チャージ残高#{@charge}円 "
   end
 
   #現在のチャージ残高を取得する機能
   def check_charge
     @charge
-    # puts "チャージ残高は#{@charge}円です"
   end
 end
 
-# 動作確認 
+# # 動作確認 
 # suica = Suica.new
-# suica.add_charge(500)
-# suica.add_charge(50)
-# suica.check_charge
+# puts suica.add_charge(500)
+# puts suica.add_charge(50)
+# puts suica.check_charge
 
 # puts 'チャージ金額を入力してください'
 # amount = gets.chomp.to_i
 
 #2:ジュース管理クラス(自販機)
 class VendingMachine
-  # acsessorはダメだけど他はいいのかな?
-  attr_reader :stock, :info, :juice
-  attr_writer :name, :price, :stock, :info, :juice
   # インナークラス
   class Juice
-    attr_reader :name, :price, :stock, :info
     # 初期状態 でジュースを1種格納
-    # 名前,値段,在庫の情報
-    # ハッシュでキー・バリュー管理
+    # 名前,値段,在庫の情報ハッシュ管理
     def initialize(name = 'ペプシ', price = 150, stock = 5)
       @info = {name: name, price: price, stock: stock}
     end
     # 最終的には配列にしたい
-    # def info
-    #   @info
-    # end
+    def info
+      @info
+    end
   end
 
   def initialize
@@ -66,16 +59,16 @@ class VendingMachine
   end
   #インナークラス生成メソッド
   #initializeに統合
-  # def juice
-  #   @juice
-  # end
+  def juice
+    @juice
+  end
   #在庫取得機能 
   def check_stock 
     @juice.info[:stock]
   end 
 end
 
-# #動作確認
+# # #動作確認
 # vm =VendingMachine.new
 
 # puts vm.juice.info[:name]
