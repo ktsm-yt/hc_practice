@@ -14,56 +14,48 @@ class Suica
   
   #現在のチャージ残高を取得する機能 && 外部利用
   def charge
-    return @charge
+     @charge
   end
 
   #チャージ機能
   def add_charge(amount)
     #100<ならエラー #? エラーでいいの?ターミナルで止まっちゃう
-    raise ArgumentError puts '100円以上の金額を入金してください' if amount < 100
+    raise ArgumentError, '100円以上の金額を入金してください' if amount < 100
     @charge += amount
   end
-
+  #自販機クラスと連携
+  def decrease_charge(amount)
+    @charge -= amount
+  end
 end
 
-# # 動作確認 
-suica = Suica.new
-puts suica.charge
-suica_charge = suica.charge
-# puts suica.add_charge(500)
-# puts suica.add_charge(50)
-# puts suica.check_charge
 
-# puts 'チャージ金額を入力してください'
-# amount = gets.chomp.to_i
-
-#2:ジュース管理クラス(自販機)
+#2:自販機クラス
 class VendingMachine
   # 初期状態 でジュースを1種格納
   def initialize(sales = 0)
-    @juice = Juice.new('ペプシ','150','5')
     @sales = sales #売上
-  end
-   #クラス外でjuiceを取得
-  def juice
-    @juice
+    #クラス内でインスタンスを作れば利用可
+    @juice = Juice.new('ペプシ', 150, 5) 
   end
 
   def sales
     @sales
   end
+  def juice
+    @juice
+  end
   
-  def sell_juice(suica_charge)
-    balance = suica_charge - @juice.price #最終的に[:name][;price]にしたい
+  def sell_juice(suica)
+    balance = suica.charge - @juice.price #最終的に[:name][;price]にしたい
     @juice.stock -= 1      # 自販機の在庫 -
     @sales += @juice.price   # 売上 +
-    @charge = balance      # Suicaチャージ -
+    suica.decrease_charge(@juice.price)      # Suicaチャージ -
     
     #自販機に販売できるか追加validation
     #Suica残高とジュース値段の条件検証 & 例外処理
-    raise ArgumentError puts 'チャージ残高が足りません' if balance < 0
-    raise ArgumentError puts '在庫がありません' if @juice.stock < 1
-    
+    raise ArgumentError, 'チャージ残高が足りません' if balance < 0
+    raise ArgumentError, '在庫がありません' if @juice.stock < 1
   end
 
   #在庫取得機能 
@@ -72,19 +64,15 @@ class VendingMachine
   end 
 end
 
-
-# インナークラスは複雑なので廃止
+# ジュースクラス
 class Juice
-
   # 名前,値段,在庫の情報 ハッシュ管理は余計なので廃止
+  def initialize(name = 'ペプシ', price = 150, stock = 5)
     @name = name
     @price = price
     @stock = stock
   end
-  # 最終的には配列にしたい
-  def info
-    @info
-  end
+
   def name
     @name
   end
@@ -99,24 +87,35 @@ class Juice
     @stock = new_stock
   end
 end
-# # #動作確認
 
+#動作確認
+suica = Suica.new
+vm = VendingMachine.new
 
-vm =VendingMachine.new
-
-# puts vm.juice.name
-# puts vm.juice.price
-# puts vm.juice.stock
-# puts vm.check_stock
-
-puts vm.sell_juice(suica_charge)
+suica.add_charge(500)
+# suica.add_charge(50)
+puts vm.sell_juice(suica)
 puts suica.charge
 puts vm.juice.stock
 puts vm.sales
-puts vm.sell_juice(suica_charge)
+puts vm.sell_juice(suica)
 puts suica.charge
 puts vm.juice.stock
 puts vm.sales
+puts vm.sell_juice(suica)
+puts suica.charge
+puts vm.juice.stock
+puts vm.sales
+puts vm.sell_juice(suica)
+puts suica.charge
+puts vm.juice.stock
+puts vm.sales
+puts vm.sell_juice(suica)
+puts suica.charge
+puts vm.juice.stock
+puts vm.sales
+
+
 
 #3:販売処理
  
