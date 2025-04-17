@@ -1,11 +1,11 @@
 class Pokemon
   attr_reader :name, :type1, :type2, :hp, :mp
   def initialize
-    @name = 'リザードン'
-    @type1 = 'ほのお'
-    @type2 = 'ひこう'
-    @hp = 100
-    @mp = 10
+    @name = name
+    @type1 = type
+    @type2 = type
+    @hp = hp
+    @mp = mp
   end
   # rubyに静的型付けはない
   # name.is_a?(String)
@@ -23,7 +23,7 @@ def main
 
   puts pokemons[0].name
   puts pokemons[9].type1
-  puts pokemons[99].attack()
+  puts pokemons[99].attack
 end
 
 main
