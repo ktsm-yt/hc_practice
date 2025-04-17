@@ -2,15 +2,16 @@
 
 #1:Suicaクラス
 class Suica
+  attr_reader :charge
   #デポジット(チャージと同様として処理) 500円
   def initialize(initial_charge = 500)
     @charge = initial_charge
   end
   
   #現在のチャージ残高の取得機能 && 外部連携
-  def charge
-     @charge
-  end
+  # def charge
+  #    @charge
+  # end
 
   #チャージ機能
   def add_charge(amount)
@@ -27,6 +28,7 @@ end
 
 #2:自販機クラス
 class VendingMachine
+  attr_reader :sales
   def initialize(sales = 0)
     @sales = sales #売上
     # ジュース管理を3つに
@@ -37,9 +39,9 @@ class VendingMachine
     ]
   end
   # 自販機に売上取得機能 && 外部連携
-  def sales
-    @sales
-  end
+  # def sales
+  #   @sales
+  # end
   def juice
     @juice
   end
@@ -87,30 +89,18 @@ end
 
 # ジュースクラス
 class Juice
+  attr_writer :stock
+  attr_reader :name, :price, :stock
   # 名前,値段,在庫の情報
   def initialize(name = 'ペプシ', price = 150, stock = 5)
     @name = name
     @price = price
     @stock = stock
   end
-
-  def name
-    @name
-  end
-  def price
-    @price
-  end
-  def stock
-    @stock
-  end
-  
-  def stock=(new_stock)
-    @stock = new_stock
-  end
 end
 
 
-#動作確認
+# #動作確認
 # suica = Suica.new
 # vm = VendingMachine.new
 
