@@ -12,26 +12,23 @@ class Suica
     @charge = initial_charge
   end
   
+  #現在のチャージ残高を取得する機能 && 外部利用
   def charge
-    @charge
-  end
-  #チャージ機能
-  def add_charge(amount)
-    if amount < 100 #100<ならエラー
-      raise ArgumentError, '100円以上の金額を入金してください'
-      # エラーでいいの?ターミナルで止まっちゃう
-    end
-    @charge += amount
+    return @charge
   end
 
-  #現在のチャージ残高を取得する機能
-  def check_charge
-    @charge
+  #チャージ機能
+  def add_charge(amount)
+    #100<ならエラー #? エラーでいいの?ターミナルで止まっちゃう
+    raise ArgumentError puts '100円以上の金額を入金してください' if amount < 100
+    @charge += amount
   end
 end
 
 # # 動作確認 
-# suica = Suica.new
+suica = Suica.new
+puts suica.charge
+suica_charge = suica.charge
 # puts suica.add_charge(500)
 # puts suica.add_charge(50)
 # puts suica.check_charge
@@ -41,56 +38,95 @@ end
 
 #2:ジュース管理クラス(自販機)
 class VendingMachine
+  attr_accessor :name, :price, :stock #! 後でメソッドに
   # インナークラス
   class Juice
     # 初期状態 でジュースを1種格納
     # 名前,値段,在庫の情報ハッシュ管理
     def initialize(name = 'ペプシ', price = 150, stock = 5)
       @info = {name: name, price: price, stock: stock}
+      @name = @info[:name]
+      @price = @info[:price]
+      @stock = @info[:stock]
     end
     # 最終的には配列にしたい
     def info
       @info
     end
+    def name
+      @name
+    end
+    def price
+      @price
+    end
+    def stock
+      @stock
+    end
+    def stock= stock
+      @stock
+    end
   end
-
-  def initialize
+  #インナークラス生成メソッド 
+  def initialize(sales = 0)
     @juice = Juice.new
+    @sales = sales #売上
   end
-  #インナークラス生成メソッド
-  #initializeに統合
+   #クラス外でjuiceを取得
   def juice
     @juice
   end
+
+  def sales
+    @sales
+  end
+  
+  def sell_juice(suica_charge)
+    balance = suica_charge - @juice.price #最終的に[:name][;price]にしたい
+    @juice.stock -= 1      # 自販機の在庫 -
+    @sales += @juice.price   # 売上 +
+    @charge = balance      # Suicaチャージ -
+    
+    #自販機に販売できるか追加validation
+    #Suica残高とジュース値段の条件検証 & 例外処理
+    raise ArgumentError puts 'チャージ残高が足りません' if balance < 0
+    raise ArgumentError puts '在庫がありません' if @juice.stock < 1
+    
+  end
+
   #在庫取得機能 
-  def check_stock 
+  def check_stock
     @juice.info[:stock]
   end 
 end
 
 # # #動作確認
-# vm =VendingMachine.new
+vm =VendingMachine.new
 
-# puts vm.juice.info[:name]
-# puts vm.juice.info[:price]
-# puts vm.juice.info[:stock]
+# puts vm.juice.name
+# puts vm.juice.price
+# puts vm.juice.stock
 # puts vm.check_stock
 
-
+puts vm.sell_juice(suica_charge)
+puts suica.charge
+puts vm.juice.stock
+puts vm.sales
+puts vm.sell_juice(suica_charge)
+puts suica.charge
+puts vm.juice.stock
+puts vm.sales
 
 #3:販売処理
-  #自販機に販売できるか追加validation
-  #Suica残高とジュース値段の条件検証 & 例外処理
-    # 自販機の在庫 -
-    # 売上 +
-    # Suicaチャージ -
+ 
   # 自販機に売上取得機能
 
 
 #4機能拡張
 # ジュース管理を3つに
-  {name: 'モンスター', price: 230, stock: 5}
-  {name: 'いろはす', price: 120, stock: 5}
+  # [{}]ハッシュの格納された配列に。
+  # {name: 'モンスター', price: 230, stock: 5}
+  # {name: 'いろはす', price: 120, stock: 5}
+  # 配列処理ブロックの追加
 # 自販機クラスにリスト機能を追加
 # 在庫補充のメソッド [:stock]
 # モンスターといろはすの購入
