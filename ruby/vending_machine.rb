@@ -23,6 +23,7 @@ class Suica
     raise ArgumentError puts '100円以上の金額を入金してください' if amount < 100
     @charge += amount
   end
+
 end
 
 # # 動作確認 
@@ -38,37 +39,9 @@ suica_charge = suica.charge
 
 #2:ジュース管理クラス(自販機)
 class VendingMachine
-  attr_accessor :name, :price, :stock #! 後でメソッドに
-  # インナークラス
-  class Juice
-    # 初期状態 でジュースを1種格納
-    # 名前,値段,在庫の情報ハッシュ管理
-    def initialize(name = 'ペプシ', price = 150, stock = 5)
-      @info = {name: name, price: price, stock: stock}
-      @name = @info[:name]
-      @price = @info[:price]
-      @stock = @info[:stock]
-    end
-    # 最終的には配列にしたい
-    def info
-      @info
-    end
-    def name
-      @name
-    end
-    def price
-      @price
-    end
-    def stock
-      @stock
-    end
-    def stock= stock
-      @stock
-    end
-  end
-  #インナークラス生成メソッド 
+  # 初期状態 でジュースを1種格納
   def initialize(sales = 0)
-    @juice = Juice.new
+    @juice = Juice.new('ペプシ','150','5')
     @sales = sales #売上
   end
    #クラス外でjuiceを取得
@@ -95,11 +68,40 @@ class VendingMachine
 
   #在庫取得機能 
   def check_stock
-    @juice.info[:stock]
+    @juice.stock
   end 
 end
 
+
+# インナークラスは複雑なので廃止
+class Juice
+
+  # 名前,値段,在庫の情報 ハッシュ管理は余計なので廃止
+    @name = name
+    @price = price
+    @stock = stock
+  end
+  # 最終的には配列にしたい
+  def info
+    @info
+  end
+  def name
+    @name
+  end
+  def price
+    @price
+  end
+  def stock
+    @stock
+  end
+  #セッターの正しい書き方
+  def stock=(new_stock)
+    @stock = new_stock
+  end
+end
 # # #動作確認
+
+
 vm =VendingMachine.new
 
 # puts vm.juice.name
