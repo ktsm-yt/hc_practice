@@ -56,7 +56,7 @@ class VendingMachine
   #3:販売処理# モンスターといろはすの購入追加
   def sell_juice(suica, juice_name)
     # 配列処理ブロックの追加
-    find_juice = @juices.find {|j| j.name == juice_name}
+    find_juice = find_juice_by_name(juice_name)
     balance = suica.charge - find_juice.price
 
     #自販機に販売できるか追加validation
@@ -74,20 +74,23 @@ class VendingMachine
     
   end
 
-  
   # 在庫補充のメソッド
   def restock_juice(juice_name, quantity)
-    find_juice = @juices.find {|j| j.name == juice_name}
+    find_juice = find_juice_by_name(juice_name)
     find_juice.stock += quantity
-    #補充するジュースを取得
-    # restock_juice = @juices.find {|j| j.name == juice_name}
-    # restock_juice.stock += quantity
   end
 
   #在庫取得機能 
   def check_stock(juice_name)
-    @find_juice = @juices.find {|j| j.name == juice_name}
+    @find_juice = find_juice_by_name(juice_name)
     @find_juice.stock
+  end
+
+  #ロジックを一箇所にまとめるリファクタリング
+  private
+  
+  def find_juice_by_name(juice_name)
+    @juices.find {|j| j.name == juice_name}
   end
 end
 
