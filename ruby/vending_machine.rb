@@ -1,6 +1,5 @@
 # vending_machine
 
-
 #1:Suicaクラス
 class Suica
   #デポジット(チャージと同様として処理) 500円
@@ -28,10 +27,8 @@ end
 
 #2:自販機クラス
 class VendingMachine
-  # 初期状態 でジュースを1種格納
   def initialize(sales = 0)
     @sales = sales #売上
-    #クラス内でインスタンスを作れば利用可
     # ジュース管理を3つに
     @juices = [
       Juice.new('ペプシ', 150, 5),
@@ -52,26 +49,20 @@ class VendingMachine
     @juices.map(&:name)
   end
 
-  
-  #3:販売処理# モンスターといろはすの購入追加
+  #3:販売処理 モンスターといろはすの購入追加
+  #4:機能拡張
   def sell_juice(suica, juice_name)
-    # 配列処理ブロックの追加
+    # 配列処理ブロック
     find_juice = find_juice_by_name(juice_name)
     balance = suica.charge - find_juice.price
 
-    #自販機に販売できるか追加validation
     #Suica残高とジュース値段の条件検証 & 例外処理
     raise ArgumentError, 'チャージ残高が足りません' if balance < 0
     raise ArgumentError, '在庫がありません' if find_juice.stock < 1
 
-    
     find_juice.stock -= 1    # 自販機の在庫 -
     @sales += find_juice.price   # 売上 +
     suica.decrease_charge(find_juice.price)  # Suicaチャージ -
-    #メソッドに オブジェクト (suica) を渡すと、
-    #そのメソッドの中では、渡されたオブジェクトが持っているメソッドを呼び出すことができます。
-    
-    
   end
 
   # 在庫補充のメソッド
@@ -96,7 +87,7 @@ end
 
 # ジュースクラス
 class Juice
-  # 名前,値段,在庫の情報 ハッシュ管理は余計なので廃止
+  # 名前,値段,在庫の情報
   def initialize(name = 'ペプシ', price = 150, stock = 5)
     @name = name
     @price = price
@@ -112,7 +103,7 @@ class Juice
   def stock
     @stock
   end
-  #セッターの正しい書き方
+  
   def stock=(new_stock)
     @stock = new_stock
   end
@@ -120,39 +111,39 @@ end
 
 
 #動作確認
-suica = Suica.new
-vm = VendingMachine.new
+# suica = Suica.new
+# vm = VendingMachine.new
 
-puts vm.sell_list
-puts vm.restock_juice('モンスター', 3)
+# puts vm.sell_list
+# puts vm.restock_juice('モンスター', 3)
 
-suica.add_charge(500)
+# suica.add_charge(500)
 
-puts suica.charge
-# suica.add_charge(50)
-puts vm.sell_juice(suica,'モンスター')
-puts suica.charge
-puts vm.check_stock('モンスター')
-puts vm.sales
-puts vm.sell_juice(suica,'モンスター')
-puts suica.charge
-puts vm.check_stock('モンスター')
-puts vm.sales
-puts vm.sell_juice(suica,'モンスター')
-puts suica.charge
-puts vm.check_stock('モンスター')
-puts vm.sales
-puts vm.sell_juice(suica,'モンスター')
-puts suica.charge
-puts vm.check_stock('モンスター')
-puts vm.sales
-puts vm.sell_juice(suica,'モンスター')
-puts suica.charge
-puts vm.check_stock('モンスター')
-puts vm.sales
+# puts suica.charge
+# # suica.add_charge(50)
+# puts vm.sell_juice(suica,'モンスター')
+# puts suica.charge
+# puts vm.check_stock('モンスター')
+# puts vm.sales
+# puts vm.sell_juice(suica,'モンスター')
+# puts suica.charge
+# puts vm.check_stock('モンスター')
+# puts vm.sales
+# puts vm.sell_juice(suica,'モンスター')
+# puts suica.charge
+# puts vm.check_stock('モンスター')
+# puts vm.sales
+# puts vm.sell_juice(suica,'モンスター')
+# puts suica.charge
+# puts vm.check_stock('モンスター')
+# puts vm.sales
+# puts vm.sell_juice(suica,'モンスター')
+# puts suica.charge
+# puts vm.check_stock('モンスター')
+# puts vm.sales
 
 
 
-#4機能拡張
+
 
 
