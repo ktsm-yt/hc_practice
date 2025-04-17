@@ -12,7 +12,7 @@ class Suica
     @charge = initial_charge
   end
   
-  #現在のチャージ残高を取得する機能 && 外部利用
+  #現在のチャージ残高の取得機能 && 外部連携
   def charge
      @charge
   end
@@ -38,18 +38,21 @@ class VendingMachine
     #クラス内でインスタンスを作れば利用可
     @juice = Juice.new('ペプシ', 150, 5) 
   end
-
+  # 自販機に売上取得機能 && 外部連携
   def sales
     @sales
   end
   def juice
     @juice
   end
-  
+
+  #3:販売処理
   def sell_juice(suica)
     balance = suica.charge - @juice.price #最終的に[:name][;price]にしたい
     @juice.stock -= 1      # 自販機の在庫 -
     @sales += @juice.price   # 売上 +
+    #メソッドに オブジェクト (suica) を渡すと、
+    #そのメソッドの中では、渡されたオブジェクトが持っているメソッドを呼び出すことができます。
     suica.decrease_charge(@juice.price)      # Suicaチャージ -
     
     #自販機に販売できるか追加validation
@@ -61,7 +64,7 @@ class VendingMachine
   #在庫取得機能 
   def check_stock
     @juice.stock
-  end 
+  end
 end
 
 # ジュースクラス
@@ -92,7 +95,10 @@ end
 suica = Suica.new
 vm = VendingMachine.new
 
+puts suica
 suica.add_charge(500)
+puts suica
+puts suica.charge
 # suica.add_charge(50)
 puts vm.sell_juice(suica)
 puts suica.charge
@@ -117,9 +123,9 @@ puts vm.sales
 
 
 
-#3:販売処理
+
  
-  # 自販機に売上取得機能
+  
 
 
 #4機能拡張
