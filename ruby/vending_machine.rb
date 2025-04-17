@@ -36,7 +36,11 @@ class VendingMachine
   def initialize(sales = 0)
     @sales = sales #売上
     #クラス内でインスタンスを作れば利用可
-    @juice = Juice.new('ペプシ', 150, 5) 
+    @juices = [
+      Juice.new('ペプシ', 150, 5),
+      Juice.new('モンスター', 230, 5),
+      Juice.new('いろはす', 120, 5)
+    ]  
   end
   # 自販機に売上取得機能 && 外部連携
   def sales
@@ -46,14 +50,19 @@ class VendingMachine
     @juice
   end
 
+  #購入可能リスト取得
+  def sell_list
+    @juices.map(&:name)
+  end
+
   #3:販売処理
   def sell_juice(suica)
-    balance = suica.charge - @juice.price #最終的に[:name][;price]にしたい
-    @juice.stock -= 1      # 自販機の在庫 -
+    balance = suica.charge - @juices.price #最終的に[:name][;price]にしたい
+    @juice.stock -= 1    # 自販機の在庫 -
     @sales += @juice.price   # 売上 +
+    suica.decrease_charge(@juice.price)  # Suicaチャージ -
     #メソッドに オブジェクト (suica) を渡すと、
     #そのメソッドの中では、渡されたオブジェクトが持っているメソッドを呼び出すことができます。
-    suica.decrease_charge(@juice.price)      # Suicaチャージ -
     
     #自販機に販売できるか追加validation
     #Suica残高とジュース値段の条件検証 & 例外処理
@@ -91,35 +100,40 @@ class Juice
   end
 end
 
+
+
+
+
 #動作確認
 suica = Suica.new
 vm = VendingMachine.new
 
-puts suica
-suica.add_charge(500)
-puts suica
-puts suica.charge
+puts vm.sell_list
+# puts suica
+# suica.add_charge(500)
+# puts suica
+# puts suica.charge
 # suica.add_charge(50)
-puts vm.sell_juice(suica)
-puts suica.charge
-puts vm.juice.stock
-puts vm.sales
-puts vm.sell_juice(suica)
-puts suica.charge
-puts vm.juice.stock
-puts vm.sales
-puts vm.sell_juice(suica)
-puts suica.charge
-puts vm.juice.stock
-puts vm.sales
-puts vm.sell_juice(suica)
-puts suica.charge
-puts vm.juice.stock
-puts vm.sales
-puts vm.sell_juice(suica)
-puts suica.charge
-puts vm.juice.stock
-puts vm.sales
+# puts vm.sell_juice(suica)
+# puts suica.charge
+# puts vm.juice.stock
+# puts vm.sales
+# puts vm.sell_juice(suica)
+# puts suica.charge
+# puts vm.juice.stock
+# puts vm.sales
+# puts vm.sell_juice(suica)
+# puts suica.charge
+# puts vm.juice.stock
+# puts vm.sales
+# puts vm.sell_juice(suica)
+# puts suica.charge
+# puts vm.juice.stock
+# puts vm.sales
+# puts vm.sell_juice(suica)
+# puts suica.charge
+# puts vm.juice.stock
+# puts vm.sales
 
 
 
@@ -130,7 +144,6 @@ puts vm.sales
 
 #4機能拡張
 # ジュース管理を3つに
-  # [{}]ハッシュの格納された配列に。
   # {name: 'モンスター', price: 230, stock: 5}
   # {name: 'いろはす', price: 120, stock: 5}
   # 配列処理ブロックの追加
