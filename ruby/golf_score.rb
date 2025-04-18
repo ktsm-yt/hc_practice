@@ -34,29 +34,29 @@ if !valid_sum
   exit
 end
 
+#定数としてハッシュを定義(シンボルじゃないので矢印)
+SCORE_NAMES = {
+  -4 => 'コンドル',
+  -3 => 'アルバトロス',
+  -2 => 'イーグル',
+  -1 => 'バーディ',
+  0 => 'パー',
+  1 => 'ボギー'
+}
+
 #zip.mapで配列ごと数値計算ができる
 def calculate(arr_X,arr_Y)
   score_arr = arr_Y.zip(arr_X).map do |y,x|
+      diff = y - x
       if  x == 5 && y == 1 #条件式の順番修正
         'コンドル'
       elsif y == 1
         'ホールインワン'
       elsif x == 5 && y == 2
         'アルバトロス'
-      elsif y - x == -2
-        'イーグル'
-      elsif y - x == -1
-        'バーディ'
-      elsif y - x == 0
-        'パー'
-      elsif y - x == 1
-        'ボギー'
-      elsif y - x == 2
-        '2ボギー'
-      elsif y - x == 3
-        '3ボギー'
       else
-        "#{y - x}ボギー"
+        #変数でキーを取り出し,なければ左辺を返す
+        SCORE_NAMES[diff] || "#{diff}ボギー"
       end
   end
   
