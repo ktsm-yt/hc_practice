@@ -9,8 +9,8 @@ class Suica
   end
   
   #現在のチャージ残高の取得機能 && 外部連携
-  def charge
-     @charge
+  def balance
+     @balance
   end
 
   #チャージ機能
