@@ -1,30 +1,7 @@
-# vending_machine
-
-#1:Suicaクラス
-class Suica
-  attr_reader :charge
-  #デポジット(チャージと同様として処理) 500円
-  def initialize(initial_charge = 500)
-    @charge = initial_charge
-  end
-  
-  #現在のチャージ残高の取得機能 && 外部連携
-  # def charge
-  #    @charge
-  # end
-
-  #チャージ機能
-  def add_charge(amount)
-    #100<ならエラー #? エラーでいいの?ターミナルで止まっちゃう
-    raise ArgumentError, '100円以上の金額を入金してください' if amount < 100
-    @charge += amount
-  end
-  #自販機クラスと連携
-  def decrease_charge(amount)
-    @charge -= amount
-  end
-end
-
+# vending_machine 
+# 相対パスで指定
+require_relative 'juice'
+require_relative 'suica'
 
 #2:自販機クラス
 class VendingMachine
@@ -87,20 +64,9 @@ class VendingMachine
   end
 end
 
-# ジュースクラス
-class Juice
-  attr_writer :stock
-  attr_reader :name, :price, :stock
-  # 名前,値段,在庫の情報
-  def initialize(name = 'ペプシ', price = 150, stock = 5)
-    @name = name
-    @price = price
-    @stock = stock
-  end
-end
 
 
-# #動作確認
+# # #動作確認
 # suica = Suica.new
 # vm = VendingMachine.new
 
@@ -131,9 +97,4 @@ end
 # puts suica.charge
 # puts vm.check_stock('モンスター')
 # puts vm.sales
-
-
-
-
-
 
