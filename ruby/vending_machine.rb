@@ -5,20 +5,21 @@ require_relative 'suica'
 
 #2:自販機クラス
 class VendingMachine
-  attr_reader :sales
+  # attr_reader :sales
   def initialize(sales = 0)
     @sales = sales #売上
     # ジュース管理を3つに
     @juices = [
-      Juice.new('ペプシ', 150, 5),
-      Juice.new('モンスター', 230, 5),
-      Juice.new('いろはす', 120, 5)
+      Juice.new('ペプシ', 150),
+      Juice.new('モンスター', 230),
+      Juice.new('いろはす', 120)
     ]
+    #stockを足す方法が必要だ
   end
   # 自販機に売上取得機能 && 外部連携
-  # def sales
-  #   @sales
-  # end
+  def sales
+    @sales
+  end
   def juice
     @juice
   end
@@ -41,7 +42,7 @@ class VendingMachine
 
     find_juice.stock -= 1    # 自販機の在庫 -
     @sales += find_juice.price   # 売上 +
-    suica.decrease_charge(find_juice.price)  # Suicaチャージ -
+    suica.pay(find_juice.price)  # Suicaチャージ -
   end
 
   # 在庫補充のメソッド
@@ -73,10 +74,10 @@ end
 # puts vm.sell_list
 # puts vm.restock_juice('モンスター', 3)
 
-# suica.add_charge(500)
+# suica.charge(500)
 
 # puts suica.charge
-# # suica.add_charge(50)
+# # suica.charge(50)
 # puts vm.sell_juice(suica,'モンスター')
 # puts suica.charge
 # puts vm.check_stock('モンスター')

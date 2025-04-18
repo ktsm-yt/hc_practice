@@ -1,11 +1,19 @@
 # ジュースクラス
 class Juice
-  attr_writer :stock
-  attr_reader :name, :price, :stock
-  # 名前,値段,在庫の情報
-  def initialize(name = 'ペプシ', price = 150, stock = 5)
+  # attr_reader :name, :price
+  # 名前,値段の情報
+  def initialize(name = 'ペプシ', price = 150)
     @name = name
     @price = price
-    @stock = stock
   end
+
+  def name
+    @name
+  end
+  def price
+    @price
+  end
+
 end
+#stock管理は自販機なので情報を移す
+#stock管理にジュースクラスが絡まず,よりシンプル
