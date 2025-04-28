@@ -1,100 +1,78 @@
 # vending_machine 
 # 相対パスで指定
-require_relative 'juice'
-require_relative 'suica'
+require_relative './juice'
+require_relative './suica'
 
 #2:自販機クラス
 class VendingMachine
   # attr_reader :sales
-  def initialize(sales = 0)
-    @sales = sales #売上
-    # ジュース管理を3つに
-    @juices = [
-      Juice.new('ペプシ', 150),
-      Juice.new('モンスター', 230),
-      Juice.new('いろはす', 120)
-    ]
-    #stockを足す方法が必要だ
-    @stock = {}
-    #@stockに対して,juicesのnameをキーとした在庫の指定
-    @juices.each{|juice| @stock[juice.name] = 5}
+  def initialize(initial_sales = 0)
+    @sales = initial_sales
+    @juices = {}
+    @stocks = {}
+    setup_initial_juices
+  end
+
+  def setup_initial_juices
+    add_juice(Juice.new('ペプシ', 150), 5)
+    add_juice(Juice.new('モンスター', 230), 5)
+    add_juice(Juice.new('いろはす', 120), 5)
+  end
+
+  # ジュース名をキーとするハッシュ
+  def add_juice(juice, initial_stock)
+    @juices[juice.name] = juice
+    @stocks[juice.name] = initial_stock
   end
   # 自販機に売上取得機能 && 外部連携
   def sales
     @sales
   end
-  #juice不要
-
+ 
   # 自販機クラスにリスト機能を追加
   def sell_list
-    @juices.map(&:name)
+    @juices.keys
   end
 
-  #3:販売処理 モンスターといろはすの購入追加
-  #4:機能拡張
-  def sell_juice(suica, juice_name)
-    # 配列処理ブロック
-    find_juice = find_juice_by_name(juice_name)
-
+  #3:販売処理 #4:機能拡張
+  def sell(suica, name)
     #Suica残高とジュース値段の条件検証 & 例外処理
-    raise ArgumentError, 'チャージ残高が足りません' if find_juice.price > suica.balance
-    raise ArgumentError, '在庫がありません' if @stock[juice_name] < 1
+    juice = @juices[name]
+    raise ArgumentError, '指定された商品は存在しません' unless juice
+    raise ArgumentError, 'チャージ残高が足りません' if juice.price > suica.balance
+    raise ArgumentError, '在庫がありません' if @stocks[name] < 1
 
-    @stock[juice_name] -= 1    # 自販機の在庫 -
-    @sales += find_juice.price   # 売上 +
-    suica.pay(find_juice.price)  # Suicaチャージ -
+    @stocks[name] -= 1    # 自販機の在庫 -
+    @sales += juice.price   # 売上 +
+    suica.pay(juice.price) # Suicaチャージ -
   end
 
   # 在庫補充のメソッド
-  def restock_juice(juice_name, quantity)
-    find_juice = find_juice_by_name(juice_name)
-    @stock[juice_name] += quantity
+  def restock(name, quantity)
+    return false unless @juices[name]
+    @stocks[name] += quantity
   end
 
   #在庫取得機能 
-  def check_stock(juice_name)
-    @find_juice = find_juice_by_name(juice_name)
-    @stock[juice_name]
-  end
-
-  #ロジックを一箇所にまとめるリファクタリング
-  private
-  
-  def find_juice_by_name(juice_name)
-    @juices.find {|j| j.name == juice_name}
+  def check_stock(name)
+    return 0 unless @juices[name]
+    @stocks[name]
   end
 end
 
+# 動作確認
+suica = Suica.new
+vm = VendingMachine.new
 
-# # #動作確認
-# suica = Suica.new
-# vm = VendingMachine.new
+puts vm.sell_list
+puts vm.check_stock('ペプシ')
 
-# puts vm.sell_list
-# puts vm.restock_juice('モンスター', 3)
+suica = Suica.new
+suica.charge(1000)
+vm.sell(suica, 'ペプシ')
 
-# suica.charge(500)
+puts vm.sales
 
-# puts suica.balance
-# # suica.charge(50)
-# puts vm.sell_juice(suica,'モンスター')
-# puts suica.balance
-# puts vm.check_stock('モンスター')
-# puts vm.sales
-# puts vm.sell_juice(suica,'モンスター')
-# puts suica.balance
-# puts vm.check_stock('モンスター')
-# puts vm.sales
-# puts vm.sell_juice(suica,'モンスター')
-# puts suica.balance
-# puts vm.check_stock('モンスター')
-# puts vm.sales
-# puts vm.sell_juice(suica,'モンスター')
-# puts suica.balance
-# puts vm.check_stock('モンスター')
-# puts vm.sales
-# puts vm.sell_juice(suica,'モンスター')
-# puts suica.balance
-# puts vm.check_stock('モンスター')
-# puts vm.sales
+vm.restock('ペプシ', 3)
+puts vm.check_stock('ペプシ')
 

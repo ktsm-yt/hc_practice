@@ -13,7 +13,6 @@ class Juice
   def price
     @price
   end
-
 end
 #stock管理は自販機なので情報を移す
 #stock管理にジュースクラスが絡まず,よりシンプル
