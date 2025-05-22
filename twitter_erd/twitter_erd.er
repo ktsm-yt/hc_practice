@@ -1,0 +1,96 @@
+[Users]
+  *user_id {label: "bigint, not null"}
+  name {label: "varchar, null"}
+  email {label: "varchar, not null, uniq" }
+  tel {label: "varchar, not null, uniq" }
+  bio {label: "varchar, not null" }
+  display_name {label: "varchar, not null" }
+  locate {label: "varchar, not null" }
+  web_site {label: "varchar, not null" }
+  birthday {label: "date, not null" }
+  profile_img {label: "varchar" }
+  avatar_img {label: "varchar" }
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Tweets] {bgcolor: "#d0e0d0"}
+  *Tweets_id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  content {label: "varchar, not null, max: 140"}
+  like_count {label: "integer, not null"}
+  reTweets_count {label: "integer, not null"}
+  book_mark {label: "boolean, not null"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[ReTweets] {bgcolor: "#d0e0d0"}
+  *reTweets_id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  is_quote {label: "boolean, not null, default:false"}
+  content {label: "varchar, null, max: 140"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Likes] {bgcolor: "#d0e0d0"}
+  *like_id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Book_Marks] {bgcolor: "#d0e0d0"}
+  *book_mark_id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Follows] {bgcolor: "#d0e0d0"}
+  *follow_id {label: "bigint, not null"}
+  follower_id {label: "bigint, not null, FK(Users)"}
+  following_id {label: "bigint, not null, FK(Users)"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Direct_Messages] {bgcolor: "#d0e0d0"}
+  *dm_id {label: "bigint, not null"}
+  sender_id {label: "bigint, not null, FK(Users)"}
+  receiver_id {label: "bigint, not null, FK(Users)"}
+  message {label: "varchar, not null"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[Notices] {bgcolor: "#d0e0d0"}
+  *notice_id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  from_user_id {label: "bigint, not null, FK(Users)"}
+  # どこからの通知か
+  target_id {label: "bigint, not null"}
+  target_type {label: "varchar, not null"}
+  message {label: "varchar, not null"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+
+# Cardinality    Syntax
+# 0 or 1         ?
+# exactly 1      1
+# 0 or more      *
+# 1 or more      +
+
+
+Users 1--* `Tweets`
+Users 1--* `ReTweets`
+Tweets 1--* `ReTweets`
+Users 1--* `Follows`
+Users 1--* `Follows`
+Users 1--* `Likes`
+Tweets 1--* `Likes`
+Users 1--* `Book_Marks`
+Tweets 1--* `Book_Marks`
+Users 1--* `Direct_Messages`
+Users 1--* `Direct_Messages`
+Users 1--* `Notices`
+Users 1--* `Notices`
+Tweets 1--* `Notices`
