@@ -15,7 +15,7 @@
 
 [tweets] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   content {label: "varchar(140), not null"}
   likes_count {label: "integer, not null, default: 0"}
   retweets_count {label: "integer, not null, default: 0"}
@@ -24,7 +24,7 @@
 
 [retweets] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   tweet_id {label: "bigint, not null, FK(tweets)"}
   is_quote {label: "boolean, not null, default:false"}
   content {label: "varchar, null, max: 140"}
@@ -33,7 +33,7 @@
 
 [likes] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   tweet_id {label: "bigint, not null, FK(tweets)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
@@ -41,7 +41,7 @@
 # tableの存在自体が
 [bookmarks] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   tweet_id {label: "bigint, not null, FK(tweets)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
@@ -49,27 +49,27 @@
 [follows] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
   # follower
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   # following
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
 [direct_messages] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
   # sender
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   # receiver
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   content {label: "varchar, not null"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
 [notices] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   #from_user
-  user_id {label: "bigint, not null, FK(Users)"}
+  user_id {label: "bigint, not null, FK(users)"}
   # どこからの通知か
   target_id {label: "bigint, not null"}
   target_type {label: "varchar, not null"}
@@ -85,17 +85,17 @@
 # 1 or more      +
 
 
-Users 1--* `tweets`
-Users 1--* `retweets`
+users 1--* `tweets`
+users 1--* `retweets`
 tweets 1--* `retweets`
-Users 1--* `follows`
-Users 1--* `follows`
-Users 1--* `likes`
+users 1--* `follows`
+users 1--* `follows`
+users 1--* `likes`
 tweets 1--* `likes`
-Users 1--* `bookmarks`
+users 1--* `bookmarks`
 tweets 1--* `bookmarks`
-Users 1--* `direct_messages`
-Users 1--* `direct_messages`
-Users 1--* `notices`
-Users 1--* `notices`
+users 1--* `direct_messages`
+users 1--* `direct_messages`
+users 1--* `notices`
+users 1--* `notices`
 tweets 1--* `notices`
