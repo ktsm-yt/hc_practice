@@ -1,5 +1,5 @@
-[Users]
-  *user_id {label: "bigint, not null"}
+[users]
+  *id {label: "bigint, not null"}
   name {label: "varchar, null"}
   email {label: "varchar, not null, uniq" }
   tel {label: "varchar, not null, uniq" }
@@ -13,62 +13,67 @@
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-[Tweets] {bgcolor: "#d0e0d0"}
-  *Tweets_id {label: "bigint, not null"}
+[tweets] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
   user_id {label: "bigint, not null, FK(Users)"}
-  content {label: "varchar, not null, max: 140"}
-  like_count {label: "integer, not null"}
-  reTweets_count {label: "integer, not null"}
-  book_mark {label: "boolean, not null"}
+  content {label: "varchar(140), not null"}
+  likes_count {label: "integer, not null, default: 0"}
+  retweets_count {label: "integer, not null, default: 0"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-[ReTweets] {bgcolor: "#d0e0d0"}
-  *reTweets_id {label: "bigint, not null"}
+[retweets] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
   user_id {label: "bigint, not null, FK(Users)"}
-  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  tweet_id {label: "bigint, not null, FK(tweets)"}
   is_quote {label: "boolean, not null, default:false"}
   content {label: "varchar, null, max: 140"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-[Likes] {bgcolor: "#d0e0d0"}
-  *like_id {label: "bigint, not null"}
+[likes] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
   user_id {label: "bigint, not null, FK(Users)"}
-  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  tweet_id {label: "bigint, not null, FK(tweets)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-[Book_Marks] {bgcolor: "#d0e0d0"}
-  *book_mark_id {label: "bigint, not null"}
+# tableの存在自体が
+[bookmarks] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
   user_id {label: "bigint, not null, FK(Users)"}
-  Tweets_id {label: "bigint, not null, FK(Tweets)"}
+  tweet_id {label: "bigint, not null, FK(tweets)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-[Follows] {bgcolor: "#d0e0d0"}
-  *follow_id {label: "bigint, not null"}
-  follower_id {label: "bigint, not null, FK(Users)"}
-  following_id {label: "bigint, not null, FK(Users)"}
-  created_at { label: "datetime, not null"}
-  updated_at { label: "datetime, not null"}
-
-[Direct_Messages] {bgcolor: "#d0e0d0"}
-  *dm_id {label: "bigint, not null"}
-  sender_id {label: "bigint, not null, FK(Users)"}
-  receiver_id {label: "bigint, not null, FK(Users)"}
-  message {label: "varchar, not null"}
-  created_at { label: "datetime, not null"}
-  updated_at { label: "datetime, not null"}
-
-[Notices] {bgcolor: "#d0e0d0"}
-  *notice_id {label: "bigint, not null"}
+[follows] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
+  # follower
   user_id {label: "bigint, not null, FK(Users)"}
-  from_user_id {label: "bigint, not null, FK(Users)"}
+  # following
+  user_id {label: "bigint, not null, FK(Users)"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[direct_messages] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
+  # sender
+  user_id {label: "bigint, not null, FK(Users)"}
+  # receiver
+  user_id {label: "bigint, not null, FK(Users)"}
+  content {label: "varchar, not null"}
+  created_at { label: "datetime, not null"}
+  updated_at { label: "datetime, not null"}
+
+[notices] {bgcolor: "#d0e0d0"}
+  *id {label: "bigint, not null"}
+  user_id {label: "bigint, not null, FK(Users)"}
+  #from_user
+  user_id {label: "bigint, not null, FK(Users)"}
   # どこからの通知か
   target_id {label: "bigint, not null"}
   target_type {label: "varchar, not null"}
-  message {label: "varchar, not null"}
+  content {label: "varchar, not null"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
@@ -80,17 +85,17 @@
 # 1 or more      +
 
 
-Users 1--* `Tweets`
-Users 1--* `ReTweets`
-Tweets 1--* `ReTweets`
-Users 1--* `Follows`
-Users 1--* `Follows`
-Users 1--* `Likes`
-Tweets 1--* `Likes`
-Users 1--* `Book_Marks`
-Tweets 1--* `Book_Marks`
-Users 1--* `Direct_Messages`
-Users 1--* `Direct_Messages`
-Users 1--* `Notices`
-Users 1--* `Notices`
-Tweets 1--* `Notices`
+Users 1--* `tweets`
+Users 1--* `retweets`
+tweets 1--* `retweets`
+Users 1--* `follows`
+Users 1--* `follows`
+Users 1--* `likes`
+tweets 1--* `likes`
+Users 1--* `bookmarks`
+tweets 1--* `bookmarks`
+Users 1--* `direct_messages`
+Users 1--* `direct_messages`
+Users 1--* `notices`
+Users 1--* `notices`
+tweets 1--* `notices`
