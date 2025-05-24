@@ -1,3 +1,6 @@
+## docker run -i erd < sample.er > output.pdf
+
+
 [users]
   *id {label: "bigint, not null"}
   name {label: "varchar, null"}
@@ -38,7 +41,7 @@
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
-# tableの存在自体が
+# tableの存在自体がフラグ
 [bookmarks] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
   user_id {label: "bigint, not null, FK(users)"}
@@ -48,28 +51,23 @@
 
 [follows] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  # follower
-  user_id {label: "bigint, not null, FK(users)"}
-  # following
-  user_id {label: "bigint, not null, FK(users)"}
+  follower_id {label: "bigint, not null, FK(users)"}
+  following_id {label: "bigint, not null, FK(users)"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
 [direct_messages] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  # sender
-  user_id {label: "bigint, not null, FK(users)"}
-  # receiver
-  user_id {label: "bigint, not null, FK(users)"}
+  sender_id {label: "bigint, not null, FK(users)"}
+  recipient_id {label: "bigint, not null, FK(users)"}
   content {label: "varchar, not null"}
   created_at { label: "datetime, not null"}
   updated_at { label: "datetime, not null"}
 
 [notices] {bgcolor: "#d0e0d0"}
   *id {label: "bigint, not null"}
-  user_id {label: "bigint, not null, FK(users)"}
-  #from_user
-  user_id {label: "bigint, not null, FK(users)"}
+  sender_id {label: "bigint, not null, FK(users)"}
+  recipient_id {label: "bigint, not null, FK(users)"}
   # どこからの通知か
   target_id {label: "bigint, not null"}
   target_type {label: "varchar, not null"}
